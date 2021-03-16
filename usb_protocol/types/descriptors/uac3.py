@@ -2,7 +2,7 @@
 # This file is part of usb-protocol.
 #
 """
-    descriptors specific to USB version 2 
+    descriptors specific to USB version 3
     NOTE: This is not complete yet and will be extended as needed
 """
 

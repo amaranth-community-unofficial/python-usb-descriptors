@@ -24,7 +24,7 @@ setup(
     include_package_data=True,
     python_requires="~=3.7",
     install_requires=['construct'],
-    setup_requires=['setuptools', 'setuptools_scm'],
+    setup_requires=['setuptools', 'setuptools_scm', 'wheel'],
 
     # Metadata
     classifiers = [

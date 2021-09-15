@@ -8,9 +8,11 @@
 """
 
 from enum import IntEnum
+import construct
 
-from .standard import StandardDescriptorNumbers
-
+from .uac1        import AudioInterfaceClassCode, AudioInterfaceSubclassCodes, AudioClassSpecificDescriptorTypes, AudioClassSpecificACInterfaceDescriptorSubtypes
+from ..           import DescriptorTypes
+from ..descriptor import DescriptorFormat, DescriptorField, DescriptorNumber
 
 class MidiStreamingInterfaceDescriptorSubtypes(IntEnum):
     # As defined in [Midi10], A.1

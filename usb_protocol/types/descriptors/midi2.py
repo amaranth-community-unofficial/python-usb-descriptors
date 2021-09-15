@@ -9,7 +9,12 @@
 
 from enum import IntEnum
 
-from .standard import StandardDescriptorNumbers
+import construct
+
+from .uac2        import AudioInterfaceClassCode, AudioInterfaceSubclassCodes, AudioClassSpecificDescriptorTypes, AudioClassSpecificACInterfaceDescriptorSubtypes
+from ..           import DescriptorTypes
+from ..descriptor import DescriptorFormat, DescriptorField, DescriptorNumber
+
 
 
 class MidiStreamingInterfaceDescriptorTypes(IntEnum):

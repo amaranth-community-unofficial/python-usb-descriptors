@@ -10,6 +10,7 @@
 from enum import IntEnum
 import construct
 
+from ..           import USBTransferType, USBSynchronizationType, USBUsageType
 from .uac1        import AudioInterfaceClassCode, AudioInterfaceSubclassCodes, AudioClassSpecificDescriptorTypes, AudioClassSpecificACInterfaceDescriptorSubtypes
 from ..           import DescriptorTypes
 from ..descriptor import DescriptorFormat, DescriptorField, DescriptorNumber

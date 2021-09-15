@@ -4,11 +4,11 @@ from setuptools import setup, find_packages
 setup(
 
     # Vitals
-    name='usb_protocol',
+    name='usb_descriptors',
     license='BSD',
-    url='https://github.com/usb-tool/luna',
-    author='Katherine J. Temkin',
-    author_email='ktemkin@greatscottgadgets.com',
+    url='https://github.com/hansfbaier/python-usb-descriptors',
+    author='Hans Baier',
+    author_email='hansfbaier@gmail.com',
     description='python library providing utilities, data structures, constants, parsers, and tools for working with USB data',
     use_scm_version= {
         "root": '..',

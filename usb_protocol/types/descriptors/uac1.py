@@ -10,8 +10,9 @@
 """
 
 from enum import IntEnum
+import construct
 
-from .standard import StandardDescriptorNumbers
+from ..descriptor import DescriptorFormat, DescriptorField, DescriptorNumber
 
 
 class AudioInterfaceClassCode(IntEnum):
@@ -262,12 +263,12 @@ class EmbeddedFunctionTerminalTypes(IntEnum):
 # As defined in [Audio10], Table 4-17
 AudioControlInterruptEndpointDescriptor = DescriptorFormat(
     "bLength"             / construct.Const(9, construct.Int8ul),
-    "bDescriptorType"     / DescriptorNumber(AudioClassSpecificStandardDescriptorNumbers.CS_ENDPOINT),
+    "bDescriptorType"     / DescriptorNumber(AudioClassSpecificDescriptorTypes.CS_ENDPOINT),
     "bEndpointAddress"    / DescriptorField(description="The address of the endpoint, use USBDirection.*.from_endpoint_address()"),
     "bmAttributes"        / DescriptorField(description="D1..0: Transfer type (0b11 = Interrupt)", default=0b11),
     "wMaxPacketSize"      / DescriptorField(description="Maximum packet size this endpoint is capable of. Used here to pass 6-byte interrupt information.", default=6),
-    "bInterval"           / DescriptorField(description="Interval for polling the Interrupt endpoint")
-    "bRefresh"            / DescriptorField(description="Reset to 0")
+    "bInterval"           / DescriptorField(description="Interval for polling the Interrupt endpoint"),
+    "bRefresh"            / DescriptorField(description="Reset to 0"),
     "bSynchAddress"       / DescriptorField(description="Reset to 0")
 )
 

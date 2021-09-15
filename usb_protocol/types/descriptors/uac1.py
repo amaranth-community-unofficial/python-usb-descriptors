@@ -65,13 +65,13 @@ class AudioClassSpecificASInterfaceDescriptorSubtypes(IntEnum):
 
 class ProcessingUnitProcessTypes(IntEnum):
     # As defined in [Audio10], Table A-7
-    PROCESS_UNDEFINED          = 0x00
-    UP_DOWNMIX_PROCESS         = 0x01
-    DOLBY_PROLOGIC_PROCESS     = 0x02
-    3D_STEREO_EXTENDER_PROCESS = 0x03
-    REVERBERATION_PROCESS      = 0x04
-    CHORUS_PROCESS             = 0x05
-    DYN_RANGE_COMP_PROCESS     = 0x06
+    PROCESS_UNDEFINED           = 0x00
+    UP_DOWNMIX_PROCESS          = 0x01
+    DOLBY_PROLOGIC_PROCESS      = 0x02
+    _3D_STEREO_EXTENDER_PROCESS = 0x03
+    REVERBERATION_PROCESS       = 0x04
+    CHORUS_PROCESS              = 0x05
+    DYN_RANGE_COMP_PROCESS      = 0x06
 
 
 class AudioClassSpecificEndpointDescriptorSubtypes(IntEnum):

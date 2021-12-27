@@ -9,6 +9,6 @@ Primary use is as a tool to easily construct USB descriptors with python.
 The library is currently an early work-in-progress; this documentation will be updated
 when the project is more mature.
 
-# notable differences to `usb-protocol`
-The USB Audio/MIDI class implementation which originally was contributed to `usb-protocol`
+# notable differences to `python-usb-protocol`
+The USB Audio/MIDI class implementation which originally was contributed to `python-usb-protocol`
 is broken there and is fixed in this project.

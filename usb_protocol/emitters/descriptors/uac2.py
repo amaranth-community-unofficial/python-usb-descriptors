@@ -65,4 +65,3 @@ class ClockSelectorDescriptorEmitter(ComplexDescriptorEmitter):
         # Figure out the total length of our descriptor, including subordinates.
         subordinate_length = sum(len(sub) for sub in self._subordinates)
         self.bLength = subordinate_length + self.DESCRIPTOR_FORMAT.sizeof()
-        print(f"main: {self.DESCRIPTOR_FORMAT.sizeof()} sub: {subordinate_length}")

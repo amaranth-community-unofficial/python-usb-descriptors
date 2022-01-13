@@ -623,6 +623,23 @@ ClockSourceDescriptor = DescriptorFormat(
     "iClockSource"        / DescriptorField(description="index of the string description of this clock source", default=0),
 )
 
+ClockSelectorDescriptorHead = DescriptorFormat(
+    "bLength"             / DescriptorField(description="Size of this descriptor, in bytes: 7+p"),
+    "bDescriptorType"     / DescriptorNumber(AudioClassSpecificStandardDescriptorNumbers.CS_INTERFACE),
+    "bDescriptorSubtype"  / DescriptorNumber(AudioClassSpecificACInterfaceDescriptorSubtypes.CLOCK_SELECTOR),
+    "bClockID"            / DescriptorField(description="Constant uniquely identifying the Clock Selector Entity within the audio function. This value is used in all requests to address this Entity."),
+    "bNrInPins"           / DescriptorField(description="Number of Input Pins of this Unit: p"),
+)
+
+ClockSelectorDescriptorElement = DescriptorFormat(
+    "baCSourceID"         / construct.Int8ul, # ID of the Clock Entity to which the first Clock Input Pin of this Clock Selector Entity is connected.
+)
+
+ClockSelectorDescriptorFoot = DescriptorFormat(
+    "bmControls"          / DescriptorField(description="D1..0: Clock Selector Control (0b01=readonly, 0b11=read/write), D7..2: Reserved. Must be set to 0.", default=ClockFrequencyControl.HOST_READ_ONLY),
+    "iClockSelector"      / DescriptorField(description="index of the string description of this clock source", default=0),
+)
+
 InputTerminalDescriptor = DescriptorFormat(
     "bLength"             / construct.Const(17, construct.Int8ul),
     "bDescriptorType"     / DescriptorNumber(AudioClassSpecificStandardDescriptorNumbers.CS_INTERFACE),
@@ -884,7 +901,7 @@ class UAC2Cases(unittest.TestCase):
         parsed = ClockSourceDescriptor.parse([
             0x08,  # Length
             0x24,  # Type
-            0x0B,  # Subtype
+            0x0A,  # Subtype
             0x01,  # Clock ID
             0x01,  # Attributes
             0x01,  # Controls
@@ -916,13 +933,62 @@ class UAC2Cases(unittest.TestCase):
         self.assertEqual(data, bytes([
                 0x08,  # Length
                 0x24,  # Type
-                0x0B,  # Subtype
+                0x0A,  # Subtype
                 0x01,  # Clock ID
                 0x01,  # Attributes
                 0x01,  # Controls
                 0x01,  # Associate terminal
                 0x42   # Clock source name
             ]))
+
+    def test_parse_clock_selector_descriptor(self):
+        # Parse the relevant descriptor ...
+        parsed = ClockSelectorDescriptorHead.parse([
+            0x08,  # Length
+            0x24,  # Type
+            0x0B,  # Subtype
+            0x01,  # Clock ID
+            0x02,  # bNrInPins
+            0x42,  # baCSourceID
+            0x43,  # baCSourceID
+            0x03,  # bmControls
+            0x44   # Clock Selector Name
+            ])
+
+        # ... and check the descriptor's fields.
+        self.assertEqual(parsed.bLength, 8)
+        self.assertEqual(parsed.bDescriptorType, AudioClassSpecificStandardDescriptorNumbers.CS_INTERFACE)
+        self.assertEqual(parsed.bDescriptorSubtype, AudioClassSpecificACInterfaceDescriptorSubtypes.CLOCK_SELECTOR)
+        self.assertEqual(parsed.bClockID, 0x01)
+        self.assertEqual(parsed.bNrInPins, 0x02)
+
+    def test_build_clock_selector_descriptor(self):
+        # Build the relevant descriptor
+        from ...emitters.descriptors.uac2 import ClockSelectorDescriptorEmitter, ClockSelectorDescriptorElementEmitter, ClockSelectorDescriptorFootEmitter
+        clockSelector = ClockSelectorDescriptorEmitter()
+        clockSelector.bClockID = 1
+        clockSelector.bNrInPins = 3
+        clockSelector.add_source(0x42)
+        clockSelector.add_source(0x43)
+        clockSelector.add_source(0x44)
+        clockSelector.add_controls(ClockFrequencyControl.HOST_PROGRAMMABLE, 0x45)
+
+        data = clockSelector.emit()
+
+        # ... and check the binary output
+        self.assertEqual(data, bytes([
+            0x0A,  # Length
+            0x24,  # Type
+            0x0B,  # Subtype
+            0x01,  # Clock ID
+            0x03,  # bNrInPins
+            0x42,  # baCSourceID
+            0x43,  # baCSourceID
+            0x44,  # baCSourceID
+            0x03,  # bmControls
+            0x45   # Clock Selector Name
+            ]))
+
 
     def test_parse_input_terminal_descriptor(self):
         # Parse the relevant descriptor ...

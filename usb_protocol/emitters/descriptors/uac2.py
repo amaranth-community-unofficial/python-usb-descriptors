@@ -26,6 +26,7 @@ ClockSelectorDescriptorElementEmitter                                    = emitt
 ClockSelectorDescriptorFootEmitter                                       = emitter_for_format(ClockSelectorDescriptorFoot)
 InputTerminalDescriptorEmitter                                           = emitter_for_format(InputTerminalDescriptor)
 OutputTerminalDescriptorEmitter                                          = emitter_for_format(OutputTerminalDescriptor)
+FeatureUnitDescriptorEmitter                                             = emitter_for_format(FeatureUnitDescriptor)
 AudioStreamingInterfaceDescriptorEmitter                                 = emitter_for_format(AudioStreamingInterfaceDescriptor)
 ClassSpecificAudioStreamingInterfaceDescriptorEmitter                    = emitter_for_format(ClassSpecificAudioStreamingInterfaceDescriptor)
 TypeIFormatTypeDescriptorEmitter                                         = emitter_for_format(TypeIFormatTypeDescriptor)

@@ -48,6 +48,11 @@ class USBDirection(IntEnum):
             return endpoint_number
 
 
+def endpoint_number_from_address(number):
+    """ Helper function that converts an endpoint address to an endpoint number, discarding direction. """
+    return number & 0x7F
+
+
 class USBPIDCategory(IntFlag):
     """ Category constants for each of the groups that PIDs can fall under. """
 
@@ -197,8 +202,8 @@ class USBPacketID(IntFlag):
     def byte(self):
         """ Return the PID's value with its upper nibble. """
 
-        inverted_pid = self ^ 0b1111
-        full_pid     = (inverted_pid << 4) | self
+        inverted_pid = int(self) ^ 0b1111
+        full_pid     = (inverted_pid << 4) | int(self)
 
         return full_pid
 
@@ -258,10 +263,6 @@ class USBTransferType(IntEnum):
     ISOCHRONOUS = 1
     BULK        = 2
     INTERRUPT   = 3
-
-
-def endpoint_number_from_address(number):
-    return number & 0x7F
 
 
 LANGUAGE_NAMES = {
@@ -593,26 +594,6 @@ class USBUsageType(IntEnum):
     IMPLICIT_FEEDBACK = 2
 
 
-class USBTransferType(IntEnum):
-    CONTROL     = 0
-    ISOCHRONOUS = 1
-    BULK        = 2
-    INTERRUPT   = 3
-
-
-class USBSynchronizationType(IntEnum):
-    NONE         = 0x00
-    ASYNC        = 0x01
-    ADAPTIVE     = 0x02
-    SYNCHRONOUS  = 0x03
-
-
-class USBUsageType(IntEnum):
-    DATA              = 0
-    FEEDBACK          = 1
-    IMPLICIT_FEEDBACK = 2
-
-
 class USBStandardRequests(IntEnum):
     GET_STATUS        = 0
     CLEAR_FEATURE     = 1
@@ -641,5 +622,7 @@ class USBStandardRequests(IntEnum):
     SET_SEL              = 48
     SET_ISOCH_DELAY      = 49
 
-
-
+class USBStandardFeatures(IntEnum):
+    ENDPOINT_HALT        = 0
+    DEVICE_REMOTE_WAKEUP = 1
+    TEST_MODE            = 2

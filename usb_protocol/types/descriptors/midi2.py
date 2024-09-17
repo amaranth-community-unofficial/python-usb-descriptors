@@ -7,14 +7,26 @@
     [Midi20] refers to "Universal Serial Bus Device Class Definition for MIDI Devices", Release 2.0, May 5, 2020
 """
 
-from enum import IntEnum
-
 import construct
 
-from .uac2        import AudioInterfaceClassCode, AudioInterfaceSubclassCodes, AudioClassSpecificDescriptorTypes, AudioClassSpecificACInterfaceDescriptorSubtypes
-from ..           import DescriptorTypes
-from ..descriptor import DescriptorFormat, DescriptorField, DescriptorNumber
+from enum import IntEnum
 
+from .. import DescriptorTypes, USBTransferType
+
+from .standard import StandardDescriptorNumbers
+
+from ..descriptor import (
+    DescriptorField,
+    DescriptorNumber,
+    DescriptorFormat,
+)
+
+from ..descriptors.uac1 import (
+    AudioInterfaceClassCodes,
+    AudioInterfaceSubclassCodes,
+    AudioClassSpecificDescriptorTypes,
+    AudioClassSpecificACInterfaceDescriptorSubtypes,
+)
 
 
 class MidiStreamingInterfaceDescriptorTypes(IntEnum):
@@ -64,7 +76,7 @@ StandardMidiStreamingInterfaceDescriptor = DescriptorFormat(
     "bInterfaceNumber"    / DescriptorField(description="ID of the streaming interface"),
     "bAlternateSetting"   / DescriptorField(description="alternate setting number for the interface", default=0),
     "bNumEndpoints"       / DescriptorField(description="Number of data endpoints used (excluding endpoint 0). Can be: 0 (no data endpoint); 1 (data endpoint); 2 (data + explicit feedback endpoint)", default=0),
-    "bInterfaceClass"     / DescriptorNumber(AudioInterfaceClassCode.AUDIO),
+    "bInterfaceClass"     / DescriptorNumber(AudioInterfaceClassCodes.AUDIO),
     "bInterfaceSubClass"  / DescriptorNumber(AudioInterfaceSubclassCodes.MIDI_STREAMING),
     "bInterfaceProtocol"  / DescriptorNumber(0),
     "iInterface"          / DescriptorField(description="index of a string descriptor describing this interface (0 = unused)", default=0)
@@ -88,6 +100,3 @@ StandardMidiStreamingDataEndpointDescriptor = DescriptorFormat(
     "wMaxPacketSize"      / DescriptorField(description="Maximum packet size this endpoint is capable of sending or receiving"),
     "bInterval"           / DescriptorField(description="Interval for polling endpoint for Interrupt data transfers. For bulk endpoints this field is ignored and must be reset to 0", default=0)
 )
-
-
-

@@ -10,10 +10,27 @@
 from enum import IntEnum
 import construct
 
-from ..           import USBTransferType, USBSynchronizationType, USBUsageType
-from .uac1        import AudioInterfaceClassCode, AudioInterfaceSubclassCodes, AudioClassSpecificDescriptorTypes, AudioClassSpecificACInterfaceDescriptorSubtypes
-from ..           import DescriptorTypes
-from ..descriptor import DescriptorFormat, DescriptorField, DescriptorNumber
+from .. import (
+    DescriptorTypes,
+    USBSynchronizationType,
+    USBTransferType,
+    USBUsageType,
+)
+
+from .standard import StandardDescriptorNumbers
+
+from ..descriptor import (
+    DescriptorField,
+    DescriptorNumber,
+    DescriptorFormat,
+)
+
+from ..descriptors.uac1 import (
+    AudioInterfaceClassCodes,
+    AudioInterfaceSubclassCodes,
+    AudioClassSpecificDescriptorTypes,
+    AudioClassSpecificACInterfaceDescriptorSubtypes,
+)
 
 class MidiStreamingInterfaceDescriptorSubtypes(IntEnum):
     # As defined in [Midi10], A.1
@@ -44,7 +61,7 @@ StandardMidiStreamingInterfaceDescriptor = DescriptorFormat(
     "bInterfaceNumber"    / DescriptorField(description="ID of the streaming interface"),
     "bAlternateSetting"   / DescriptorField(description="alternate setting number for the interface", default=0),
     "bNumEndpoints"       / DescriptorField(description="Number of data endpoints used (excluding endpoint 0). Can be: 0 (no data endpoint); 1 (data endpoint); 2 (data + explicit feedback endpoint)", default=0),
-    "bInterfaceClass"     / DescriptorNumber(AudioInterfaceClassCode.AUDIO),
+    "bInterfaceClass"     / DescriptorNumber(AudioInterfaceClassCodes.AUDIO),
     "bInterfaceSubClass"  / DescriptorNumber(AudioInterfaceSubclassCodes.MIDI_STREAMING),
     "bInterfaceProtocol"  / DescriptorNumber(0),
     "iInterface"          / DescriptorField(description="index of a string descriptor describing this interface (0 = unused)", default=0)

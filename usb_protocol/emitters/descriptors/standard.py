@@ -175,10 +175,10 @@ class DeviceDescriptorCollection:
         adds the relevant fields to our string descriptor collection.
         """
 
-        if isinstance(field_value, str):
-            return self.get_index_for_string(field_value)
-        else:
+        if isinstance(field_value, int):
             return field_value
+        else:
+            return self.get_index_for_string(field_value)
 
 
     def get_index_for_string(self, string):
@@ -202,7 +202,12 @@ class DeviceDescriptorCollection:
 
         # ... store our string descriptor with it ...
         identifier = StandardDescriptorNumbers.STRING, index
-        self._descriptors[identifier] = get_string_descriptor(string)
+        if isinstance(string, str):
+            descriptor = get_string_descriptor(string)
+        else:
+            # Allow custom descriptors
+            descriptor = string
+        self._descriptors[identifier] = descriptor
 
         # ... and return our index.
         return index
@@ -214,8 +219,7 @@ class DeviceDescriptorCollection:
         Parameters:
             descriptor      -- The descriptor to be added.
             index           -- The index of the relevant descriptor. Defaults to 0.
-            descriptor_type -- The type of the descriptor to be added. If `None`,
-                               this is automatically derived from the descriptor contents.
+            descriptor_type -- The type of the descriptor to be added. If `None`, this is automatically derived from the descriptor contents.
         """
 
         # If this is an emitter rather than a descriptor itself, convert it.
@@ -225,6 +229,15 @@ class DeviceDescriptorCollection:
         # Figure out the identifier (type + index) for this descriptor...
         if (descriptor_type is None):
             descriptor_type = descriptor[1]
+
+        # Try to convert descriptor_type to StandardDescriptorNumbers ...
+        if (type(descriptor_type) == int):
+            try:
+                descriptor_type = StandardDescriptorNumbers(descriptor_type)
+            except ValueError:
+                # If not possible, keep int
+                pass
+
         identifier = descriptor_type, index
 
         # ... and store it.

@@ -15,9 +15,13 @@ import construct
 from   construct  import this, Default
 
 from .. import LanguageIDs
-from ..descriptor import \
-    DescriptorField, DescriptorNumber, DescriptorFormat, \
-    BCDFieldAdapter, DescriptorLength
+from ..descriptor import (
+    DescriptorField,
+    DescriptorNumber,
+    DescriptorFormat,
+    BCDFieldAdapter,
+    DescriptorLength
+)
 
 
 class StandardDescriptorNumbers(IntEnum):
@@ -159,6 +163,16 @@ DeviceQualifierDescriptor = DescriptorFormat(
     "_bReserved"          / construct.Optional(construct.Const(b"\0"))
 )
 
+InterfaceAssociationDescriptor = DescriptorFormat(
+    "bLength"             / construct.Const(8, construct.Int8ul),
+    "bDescriptorType"     / DescriptorNumber(StandardDescriptorNumbers.INTERFACE_ASSOCIATION),
+    "bFirstInterface"     / DescriptorField("Interface number of the first interface that is associated with this function."),
+    "bInterfaceCount"     / DescriptorField("Number of contiguous interfaces that are associated with this function."),
+    "bFunctionClass"      / DescriptorField("Class code"),
+    "bFunctionSubClass"   / DescriptorField("Subclass code"),
+    "bFunctionProtocol"   / DescriptorField("Protocol code"),
+    "iFunction"           / DescriptorField("Index of string descriptor describing this function."),
+)
 
 #
 # SuperSpeed descriptors
@@ -263,8 +277,8 @@ class DescriptorParserCases(unittest.TestCase):
             0xFF,         # subclass
             0xFF,         # protocol
             64,           # ep0 max packet size
-            0xd0, 0x16,   # VID
-            0x3b, 0x0f,   # PID
+            0x09, 0x12,   # VID
+            0x01, 0x00,   # PID
             0x00, 0x00,   # device rev
             0x01,         # manufacturer string
             0x02,         # product string
@@ -283,8 +297,8 @@ class DescriptorParserCases(unittest.TestCase):
         self.assertEqual(parsed.bDeviceSubclass,   0xFF)
         self.assertEqual(parsed.bDeviceProtocol,   0xFF)
         self.assertEqual(parsed.bMaxPacketSize0,     64)
-        self.assertEqual(parsed.idVendor,        0x16d0)
-        self.assertEqual(parsed.idProduct,       0x0f3b)
+        self.assertEqual(parsed.idVendor,        0x1209)
+        self.assertEqual(parsed.idProduct,       0x0001)
         self.assertEqual(parsed.bcdDevice,            0)
         self.assertEqual(parsed.iManufacturer,        1)
         self.assertEqual(parsed.iProduct,             2)

@@ -9,13 +9,21 @@
     [TermT10] refers to "Universal Serial Bus Device Class Definition for Terminal Types", Release 1.0, March 18, 1998
 """
 
+import construct
+
 from enum import IntEnum
 import construct
 
 from ..descriptor import DescriptorFormat, DescriptorField, DescriptorNumber
 
+from ..descriptor import (
+    DescriptorField,
+    DescriptorNumber,
+    DescriptorFormat,
+)
 
-class AudioInterfaceClassCode(IntEnum):
+
+class AudioInterfaceClassCodes(IntEnum):
     # As defined in [Audio10], Table A-1
     AUDIO = 0x01
 
@@ -66,13 +74,13 @@ class AudioClassSpecificASInterfaceDescriptorSubtypes(IntEnum):
 
 class ProcessingUnitProcessTypes(IntEnum):
     # As defined in [Audio10], Table A-7
-    PROCESS_UNDEFINED           = 0x00
-    UP_DOWNMIX_PROCESS          = 0x01
-    DOLBY_PROLOGIC_PROCESS      = 0x02
-    _3D_STEREO_EXTENDER_PROCESS = 0x03
-    REVERBERATION_PROCESS       = 0x04
-    CHORUS_PROCESS              = 0x05
-    DYN_RANGE_COMP_PROCESS      = 0x06
+    PROCESS_UNDEFINED            = 0x00
+    UP_DOWNMIX_PROCESS           = 0x01
+    DOLBY_PROLOGIC_PROCESS       = 0x02
+    _3D_STEREO_EXTENDER_PROCESS  = 0x03
+    REVERBERATION_PROCESS        = 0x04
+    CHORUS_PROCESS               = 0x05
+    DYN_RANGE_COMP_PROCESS       = 0x06
 
 
 class AudioClassSpecificEndpointDescriptorSubtypes(IntEnum):
@@ -269,6 +277,6 @@ AudioControlInterruptEndpointDescriptor = DescriptorFormat(
     "wMaxPacketSize"      / DescriptorField(description="Maximum packet size this endpoint is capable of. Used here to pass 6-byte interrupt information.", default=6),
     "bInterval"           / DescriptorField(description="Interval for polling the Interrupt endpoint"),
     "bRefresh"            / DescriptorField(description="Reset to 0"),
-    "bSynchAddress"       / DescriptorField(description="Reset to 0")
+    "bSynchAddress"       / DescriptorField(description="Reset to 0"),
 )
 

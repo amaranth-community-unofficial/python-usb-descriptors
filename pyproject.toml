@@ -38,11 +38,6 @@ dependencies = [
 
 dynamic = ["version"]
 
-[project.urls]
-Documentation = "https://python-usb-protocol.readthedocs.io"
-Repository    = "https://github.com/greatscottgadgets/python-usb-protocol"
-Issues        = "https://github.com/greatscottgadgets/python-usb-protocol/issues"
-
 [tool.setuptools.package-dir]
 usb_protocol = "usb_protocol"
 
